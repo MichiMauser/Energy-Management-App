@@ -1,0 +1,147 @@
+
+version: '3.8'
+
+services:
+  user-db:
+    image: mysql:8.1
+    container_name: user-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - my-user-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  device-db:
+    image: mysql:8.1
+    container_name: device-db 
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: device_db
+      MYSQL_USER: device 
+      MYSQL_PASSWORD: root
+    ports:
+      - "3308:3306"
+    volumes:
+      - my-device-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-db:
+    image: mysql:8.1
+    container_name: auth-db 
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: auth
+      MYSQL_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - my-auth-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user-microservice:
+    build:
+      context: ./user-microservice
+      dockerfile: Dockerfile
+    container_name: user-microservice
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: user-db
+      DB_PORT: 3306
+      DB_NAME: user_db
+      DB_USERNAME: user
+      DB_PASS: root
+    depends_on:
+      user-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  device-microservice:
+    build:
+      context: ./device-microservice
+      dockerfile: Dockerfile
+    container_name: device-microservice
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: device-db
+      DB_PORT: 3306
+      DB_NAME: device_db
+      DB_USERNAME: device 
+      DB_PASS: root
+    depends_on:
+      device-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  auth-microservice:
+    build:
+      context: ./auth-microservice
+      dockerfile: Dockerfile
+    container_name: auth-microservice
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: auth-db
+      DB_PORT: 3306
+      DB_NAME: auth_db 
+      DB_USERNAME: auth 
+      DB_PASS: root
+    depends_on:
+      auth-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8100:8100"
+    environment:
+      AUTH_HOST: auth-microservice
+      USER_HOST: user-microservice
+      DEVICE_HOST: device-microservice
+       
+volumes:
+  my-user-db:
+  my-device-db:
+  my-auth-db:
+
