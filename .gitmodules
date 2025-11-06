@@ -1,15 +1,20 @@
 [submodule "api-gateway"]
 	path = api-gateway
 	url = https://gitlab.com/sd2025_30643_moga_eduard/api-gateway
+	branch = main
 [submodule "auth-microservice"]
 	path = auth-microservice
 	url = https://gitlab.com/sd2025_30643_moga_eduard/auth-microservice
+	branch = main
 [submodule "device-microservice"]
 	path = device-microservice
 	url = https://gitlab.com/sd2025_30643_moga_eduard/device-microservice
+	branch = main
 [submodule "app-frontend"]
 	path = app-frontend
 	url = https://gitlab.com/sd2025_30643_moga_eduard/frontend
+	branch = main
 [submodule "user-microservice"]
 	path = user-microservice
 	url = https://gitlab.com/sd2025_30643_moga_eduard/user-microservice
+	branch = main
