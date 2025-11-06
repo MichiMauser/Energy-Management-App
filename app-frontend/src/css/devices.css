@@ -1,0 +1,68 @@
+/* css/devices.css */
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+}
+
+.accordion-button:focus {
+    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.125) !important;
+}
+
+.accordion-item {
+    margin-bottom: 0.5rem !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.accordion-header {
+    width: 100% !important;
+}
+
+.accordion-header button {
+    border-radius: 8px !important;
+    width: 100% !important;
+    padding-right: 3rem !important;
+}
+
+.accordion-button {
+    width: 100% !important;
+}
+
+.accordion-button:not(.collapsed) {
+    border-radius: 8px 8px 0 0 !important;
+    width: 100% !important;
+}
+
+/* Smooth accordion transitions */
+.accordion-collapse {
+    transition: height 0.35s ease !important;
+}
+
+.accordion-body {
+    padding: 1.5rem !important;
+}
+
+/* Prevent content jumping */
+.accordion-button {
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+/* Hardware acceleration for smoother animation */
+.accordion-collapse.collapsing {
+    transition: height 0.35s ease !important;
+    will-change: height !important;
+    transform: translateZ(0) !important;
+    overflow: hidden !important;
+}
+
+.accordion-collapse.show {
+    will-change: auto !important;
+}
+
+/* Override Bootstrap's default transition */
+.accordion-button::after {
+    transition: transform 0.2s ease-in-out !important;
+}

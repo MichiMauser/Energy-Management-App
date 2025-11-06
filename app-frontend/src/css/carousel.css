@@ -1,0 +1,24 @@
+body, html {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+.carousel {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    max-width: 100%;
+}
+
+.carousel-item {
+    max-width: 100%;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    max-width: 100%;
+}
